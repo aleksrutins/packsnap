@@ -5,6 +5,6 @@
         "@opam/dune": "*"
     },
     "esy": {
-        "build": "dune build -p hello-world"
+        "build": "dune build -p packsnap"
     }
 }
