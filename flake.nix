@@ -14,8 +14,11 @@
               name = "packsnap";
               nativeBuildInputs = [
                 pkgs.gcc
+                pkgs.vala
+                pkgs.pkg-config
                 pkgs.meson
                 pkgs.ninja
+                pkgs.glib
               ];
               src = self;
             };
