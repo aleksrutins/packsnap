@@ -13,12 +13,11 @@
             stdenv.mkDerivation {
               name = "packsnap";
               nativeBuildInputs = [
-                pkgs.nodejs
-                pkgs.nodePackages.esy
+                pkgs.gcc
+                pkgs.meson
+                pkgs.ninja
               ];
               src = self;
-              buildPhase = "esy build";
-              installPhase = "mkdir -p $out/bin; install -t $out/bin/packsnap _esy/default/build/install/default/bin/packsnap.exe";
             };
         };
       }
