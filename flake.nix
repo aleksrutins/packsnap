@@ -5,21 +5,14 @@
 
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages.${system}; in
+      let 
+        pkgs = nixpkgs.legacyPackages.${system};
+        stuff = import ./. { inherit nixpkgs pkgs; };
+      in
       rec {
         packages = flake-utils.lib.flattenTree {
-          default =
-            with pkgs;
-            stdenv.mkDerivation {
-              name = "packsnap";
-              nativeBuildInputs = [
-                pkgs.gcc
-                pkgs.pkg-config
-                pkgs.meson
-                pkgs.ninja
-              ];
-              src = self;
-            };
+          packsnap = stuff.packsnap;
+          default = stuff.packsnap;
         };
         devShells = flake-utils.lib.flattenTree {
           default = pkgs.mkShell {
@@ -28,7 +21,7 @@
             ];
           };
         };
-        lib = import ./lib { inherit nixpkgs; };
+        lib = stuff.lib;
       }
     );
  }
