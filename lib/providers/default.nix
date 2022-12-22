@@ -1,8 +1,9 @@
+{}:
 let
   providers = [
-    import ./node.nix
+    (import ./rust.nix {})
   ];
-in
+in with builtins;
 {
   planBuild = path:
     head (filter (provider: (provider.detect path)) providers);

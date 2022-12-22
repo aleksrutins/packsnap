@@ -1,0 +1,26 @@
+{
+    "nixpkgs": {
+        "branch": "release-22.11",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "050bad7de82834f25b2bd1769ef2813c35062ad0",
+        "sha256": "1kyj0yjawr6l4yv7lwj2l7ij1sx080icq7i2az5a1ccgp3dn76n9",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/050bad7de82834f25b2bd1769ef2813c35062ad0.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "rust.nix": {
+        "branch": "master",
+        "description": "Build rust crates in Nix. No configuration, no code generation, no IFD. Sandbox friendly.",
+        "homepage": "",
+        "owner": "input-output-hk",
+        "repo": "rust.nix",
+        "rev": "69a1b038ae9e247a5d8066762552eb11ed26ed4a",
+        "sha256": "1cna8aa5fygcd7hgnvfqkymj2iaw334khli4snir3m7qb2lz0j2n",
+        "type": "tarball",
+        "url": "https://github.com/input-output-hk/rust.nix/archive/69a1b038ae9e247a5d8066762552eb11ed26ed4a.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

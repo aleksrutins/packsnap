@@ -1,2 +1,2 @@
 { packsnap ? import ../../. {} }:
-packsnap.lib.build {}
+packsnap.lib.build {path = ./.;}
