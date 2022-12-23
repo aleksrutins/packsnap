@@ -1,3 +1,4 @@
 {
-    "mesonbuild.configureOnOpen": false
+    "mesonbuild.configureOnOpen": false,
+    "nixEnvSelector.nixFile": "${workspaceRoot}/flake.nix"
 }
