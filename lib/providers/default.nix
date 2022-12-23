@@ -2,6 +2,7 @@
 let
   providers = [
     (import ./rust.nix {})
+    (import ./node.nix {})
   ];
 in with builtins;
 {

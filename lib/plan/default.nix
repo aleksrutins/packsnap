@@ -4,10 +4,10 @@
   buildPlan = variables: contents: libraries: runCmd:
     with builtins;
     {
-      inherit contents;
+      contents = concatLists [contents [pkgs.bash]];
       config = {
         Env = variables;
-        Cmd = runCmd;
+        Cmd = ["${pkgs.bash}/bin/bash" "-c" runCmd];
       };
     };
 }

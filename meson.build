@@ -3,5 +3,9 @@ project('packsnap', 'cpp',
   default_options : ['warning_level=3', 'cpp_std=c++14'])
 
 executable('packsnap',
-           'main.cpp',
+           [
+            'main.cpp',
+            'commands/initProject.cpp',
+            'commands/buildProject.cpp'
+           ],
            install : true)

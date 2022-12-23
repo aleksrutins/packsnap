@@ -11,6 +11,18 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/050bad7de82834f25b2bd1769ef2813c35062ad0.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "npmlock2nix": {
+        "branch": "master",
+        "description": "nixify npm based packages [maintainer=@andir] ",
+        "homepage": "",
+        "owner": "nix-community",
+        "repo": "npmlock2nix",
+        "rev": "cc11d791fdc3afb2ae7c2f11e10abf7c33b40763",
+        "sha256": "1iyd7pc9x7jnbb04kjp6f0qly5di29rgh8g85w6fcplzkvlsd046",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/npmlock2nix/archive/cc11d791fdc3afb2ae7c2f11e10abf7c33b40763.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "rust.nix": {
         "branch": "master",
         "description": "Build rust crates in Nix. No configuration, no code generation, no IFD. Sandbox friendly.",
