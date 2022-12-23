@@ -22,6 +22,10 @@ let plan = import ../plan {};
           ["npm run build"]
         else
           [];
+    
+    lockfileVersion = path:
+      let lockfile = pkgs.lib.importJSON /./${path}/package-lock.json;
+      in lockfile.lockfileVersion or 1;
 
 in with builtins;
 {
@@ -29,7 +33,13 @@ in with builtins;
     pathExists /./${path}/package.json;
   plan = path:
     let
-      derivation = npmlock2nix.v1.build {
+      builder =
+        if (lockfileVersion path) == 2 then
+          npmlock2nix.v2
+        else
+          npmlock2nix.v1;
+
+      derivation = builder.build {
         src = path;
         installPhase = "cp -r . $out";
         buildCommands = getBuildCmds path;
