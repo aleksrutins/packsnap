@@ -1,4 +1,4 @@
 {
     "mesonbuild.configureOnOpen": false,
-    "nixEnvSelector.nixFile": "${workspaceRoot}/flake.nix"
+    "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
 }
