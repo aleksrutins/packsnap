@@ -4,9 +4,9 @@
 , misc ? import ./misc.nix {}
 , packsnap }:
 let providers = import ./providers {};
-in rec {
+in {
   build = ({ name ? "packsnap-image", path }:
     let provider = providers.planBuild path;
-    in pkgs.dockerTools.buildImage ((provider.plan path) // { name = "packsnap-image"; tag = "latest"; })
+    in pkgs.dockerTools.buildImage ((provider.plan path) // { name = name; tag = "latest"; })
   );
 }
