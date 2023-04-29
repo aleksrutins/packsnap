@@ -3,6 +3,8 @@ let
   providers = [
     (import ./rust.nix {})
     (import ./node.nix {})
+    # Deno MUST come after Node!
+    (import ./deno.nix {})
   ];
 in with builtins;
 {
