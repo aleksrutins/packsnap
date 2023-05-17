@@ -6,8 +6,6 @@
 #include <stdlib.h>
 
 void oci_content_descriptor_to_json(struct oci_content_descriptor *desc, char **out_buf) {
-    char *itoa_buf;
-
     clrstr(out_buf);
 
     json_build_property_str(out_buf, mediaType, desc->media_type)

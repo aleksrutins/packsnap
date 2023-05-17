@@ -1,1 +1,2 @@
-packsnap_srcs += files('strsafe.c')
+packsnap_srcs += files('strsafe.c', 'strutil.c')
+subdir('json')

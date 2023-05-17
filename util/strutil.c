@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 char *itoa(int i) {
     int len = (int)(ceil(log10(i))+2);

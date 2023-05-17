@@ -4,4 +4,4 @@
 char *itoa(int i);
 char *i64toa(int64_t i);
 
-void clrstr(char **str)
+void clrstr(char **str);

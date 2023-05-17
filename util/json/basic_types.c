@@ -1,6 +1,7 @@
 #include <util/json/basic_types.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <util/strsafe.h>
 #include <util/strutil.h>
