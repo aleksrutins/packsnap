@@ -48,4 +48,4 @@ struct oci_content_descriptor {
 };
 
 /** This method will (re)allocate out_buf to the required length. */
-void oci_content_descriptor_to_json(struct oci_content_descriptor *desc, char *out_buf);
+void oci_content_descriptor_to_json(struct oci_content_descriptor *desc, char **out_buf);
