@@ -44,7 +44,7 @@ struct oci_content_descriptor {
      * 
      * This OPTIONAL property contains the type of an artifact when the descriptor points to an artifact. This is the value of the config descriptor mediaType when the descriptor references an image manifest. If defined, the value MUST comply with RFC 6838, including the naming requirements in its section 4.2, and MAY be registered with IANA.
     */
-    char *artifactType;
+    char *artifact_type;
 };
 
 /** This method will (re)allocate out_buf to the required length. */

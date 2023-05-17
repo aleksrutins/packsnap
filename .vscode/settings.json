@@ -1,4 +1,8 @@
 {
     "mesonbuild.configureOnOpen": false,
-    "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
+    "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
+    "C_Cpp.default.compileCommands": "builddir/vscode_compile_commands.json",
+    "files.associations": {
+        "basic_types.h": "c"
+    }
 }
