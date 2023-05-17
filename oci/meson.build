@@ -1,1 +1,1 @@
-packsnap_srcs += files('descriptor.c', 'manifest.c')
+packsnap_srcs += files('descriptor.cpp', 'manifest.cpp')
