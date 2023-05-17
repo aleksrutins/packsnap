@@ -1,0 +1,1 @@
+packsnap_srcs += files('strsafe.c')

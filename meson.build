@@ -1,11 +1,14 @@
-project('packsnap', 'cpp',
+project('packsnap', 'c',
   version : '0.1',
-  default_options : ['warning_level=3', 'cpp_std=c++14'])
+  default_options : ['warning_level=3'])
 
-executable('packsnap',
-           [
-            'main.cpp',
-            'commands/initProject.cpp',
-            'commands/buildProject.cpp'
-           ],
-           install : true)
+packsnap_srcs = ['packsnap.c']
+
+subdir('oci')
+subdir('util')
+
+exe = executable('packsnap', packsnap_srcs,
+  include_directories : include_directories('include'),
+  install : true)
+
+test('basic', exe)
