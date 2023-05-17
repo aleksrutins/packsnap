@@ -7,7 +7,7 @@
 
 #define json_build_property_str(out_buf, name, value) { \
     strcat_s(out_buf, "\"" #name "\": \""); \
-    strcat_s(out_buf, desc->media_type); \
+    strcat_s(out_buf, value); \
     strcat_s(out_buf, "\","); \
 }
 
@@ -21,7 +21,7 @@
 
 #define json_build_property_convert(out_buf, name, value, t) { \
     char *buf; \
-    t##_to_json(value, &buf); \
+    t##_to_json(&value, &buf); \
     strcat_s(out_buf, "\"" #name "\": "); \
     strcat_s(out_buf, buf); \
     strcat_s(out_buf, ","); \

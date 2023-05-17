@@ -78,4 +78,4 @@ struct oci_image_manifest {
 };
 
 /** This method will (re)allocate out_buf to the required length. */
-void oci_image_manifest_to_json(struct oci_image_manifest *manifest, char *out_buf);
+void oci_image_manifest_to_json(struct oci_image_manifest *manifest, char **out_buf);
