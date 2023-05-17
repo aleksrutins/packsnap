@@ -3,6 +3,7 @@
     "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
     "C_Cpp.default.compileCommands": "builddir/vscode_compile_commands.json",
     "files.associations": {
-        "basic_types.h": "c"
+        "basic_types.h": "c",
+        "typeinfo": "c"
     }
 }
