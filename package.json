@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "ocaml": "4.14.x",
+        "@opam/reason": "*",
+        "@opam/dune": "*"
+    },
+    "esy": {
+        "build": "dune build -p hello-world"
+    }
+}
