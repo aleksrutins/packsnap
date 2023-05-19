@@ -1,0 +1,1 @@
+module EnvHash = Map.Make(String)

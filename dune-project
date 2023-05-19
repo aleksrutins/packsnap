@@ -19,7 +19,7 @@
  (name packsnap)
  (synopsis "A fast container build system")
  (description "A longer description")
- (depends ocaml dune)
+ (depends ocaml dune yojson)
  (tags
   (docker oci)))
 
