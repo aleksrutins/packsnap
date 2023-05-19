@@ -9,7 +9,7 @@
 
 (authors "Aleks Rutins")
 
-(maintainers "Maintainer Name")
+(maintainers "Aleks Rutins")
 
 (license MIT)
 

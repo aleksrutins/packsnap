@@ -1,0 +1,3 @@
+(library
+ (name packsnap_providers)
+ (modules_without_implementation provider))

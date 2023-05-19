@@ -1,4 +1,4 @@
 (executable
  (public_name packsnap)
  (name main)
- (libraries packsnap))
+ (libraries packsnap packsnap_providers))
