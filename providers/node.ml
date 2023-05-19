@@ -48,14 +48,12 @@ module NodeProvider : Provider = struct
   let get_node_version path =
     let package_json = Yojson.Basic.from_file (package_json_path path) in
     let open Yojson.Basic.Util in
-    try match package_json |> member "engines" |> member "node" |> to_string_option with
-      | None -> "18"
-      (* we only want the major version for the snap channel *)
-      | Some version -> String.split_on_char '.' version 
-                        |> List.hd
-                        |> String.to_seq
-                        |> Seq.filter (fun (c) -> '0' < c && c < '9') (* Only the numbers *)
-                        |> String.of_seq
+    try let version = package_json |> member "engines" |> member "node" |> to_string in
+      String.split_on_char '.' version 
+      |> List.hd
+      |> String.to_seq
+      |> Seq.filter (fun (c) -> '0' < c && c < '9') (* Only the numbers *)
+      |> String.of_seq
     with _ -> "18"
 
   let get_build_cmds path =
