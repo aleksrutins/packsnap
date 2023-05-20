@@ -1,5 +1,5 @@
 open ProviderBase
 
 module NodeProvider : sig
-    include Provider
+  include Provider
 end

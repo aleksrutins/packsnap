@@ -1,3 +1,3 @@
-module EnvHash = Map.Make(String)
+module EnvHash = Map.Make (String)
 
-let (++) left right = String.concat "" [left; right]
+let ( ++ ) left right = String.concat "" [ left; right ]

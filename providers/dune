@@ -2,5 +2,8 @@
  (name packsnap_providers)
  (modules_without_implementation providerBase)
  (libraries yojson packsnap)
- (inline_tests (deps (source_tree ../examples/)))
- (preprocess (pps ppx_inline_test)))
+ (inline_tests
+  (deps
+   (source_tree ../examples/)))
+ (preprocess
+  (pps ppx_inline_test)))
