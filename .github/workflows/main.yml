@@ -12,9 +12,6 @@ jobs:
         os:
           - macos-latest
           - ubuntu-latest
-          #- windows-latest
-        ocaml-compiler:
-          - 5.0.x
 
     runs-on: ${{ matrix.os }}
 
@@ -22,22 +19,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use OCaml ${{ matrix.ocaml-compiler }}
-        uses: ocaml/setup-ocaml@v2
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          node-version: '20'
+      
+      - name: Setup Esy
+        run: npm i -g esy
 
-      - run: opam install . --deps-only --with-doc --with-test
+      - name: Build
+        run: esy
 
-      - run: opam exec -- dune build
-
-      - run: opam exec -- dune runtest
+      - name: Test
+        run: esy test
 
       - name: Upload the build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.os }}-${{ matrix.ocaml-compiler }}-packsnap.exe
-          path: _build/default/bin/main.exe
+          name: ${{ matrix.os }}-packsnap.exe
+          path: _esy/default/build/default/bin/main.exe
 
   lint-doc:
     runs-on: ubuntu-latest
@@ -45,10 +45,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use OCaml 4.13.x
+      - name: Use OCaml 4.14.x
         uses: ocaml/setup-ocaml@v2
         with:
-          ocaml-compiler: 4.13.x
+          ocaml-compiler: 4.14.x
           dune-cache: true
 
       - name: Lint doc
@@ -60,10 +60,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use OCaml 5.0.x
+      - name: Use OCaml 4.14.x
         uses: ocaml/setup-ocaml@v2
         with:
-          ocaml-compiler: 5.0.x
+          ocaml-compiler: 4.14.x
           dune-cache: true
 
       - name: Lint fmt

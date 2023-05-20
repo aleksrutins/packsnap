@@ -1,0 +1,17 @@
+{
+  "name": "packsnap",
+  "dependencies": {
+    "@opam/core": "v0.15.1",
+    "@opam/core_unix": "v0.15.2",
+    "@opam/directories": "*",
+    "@opam/dune": "*",
+    "@opam/ocaml-lsp-server": "*",
+    "@opam/ppx_expect": "*",
+    "@opam/ppx_inline_test": "*",
+    "@opam/reason": "*",
+    "@opam/yojson": "*",
+    "ocaml": "4.14.x"
+  },
+  "scripts": { "test": "dune test" },
+  "esy": { "build": "dune build" }
+}
