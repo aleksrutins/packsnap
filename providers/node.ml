@@ -50,7 +50,7 @@ module NodeProvider : Provider = struct
     let package_json = read_package_json path in
     let open Yojson.Basic.Util in
     try 
-      let _ = package_json |> member "scripts" |> member name in true
+      let _ = package_json |> member "scripts" |> member name |> to_string in true
     with _ -> false
   
   let get_package_manager path = PackageManager.detect path
@@ -84,15 +84,15 @@ module NodeProvider : Provider = struct
       let package_json = read_package_json path in
       let open Yojson.Basic.Util in
       if package_json |> keys |> List.exists ((=) "main") then
-        "node" ++ (package_json |> member "main" |> to_string)
+        "node " ++ (package_json |> member "main" |> to_string)
       else
         "node index.js"
 
   let plan_build path =
+    let version = get_node_version path in
     BuildPlan.create_plan
-      [
-        Snap("node", (get_node_version path) ++ "/stable")
-      ]
+      ("node:" ++ version)
+      []
       (get_build_cmds path)
       (get_start_cmd path)
 end
@@ -102,7 +102,7 @@ let%test_module "node tests" = (module struct
 
   let%test "it correctly recognizes node" =
     let plan = NodeProvider.plan_build "../examples/node" in
-    List.exists ((=) (Package.Snap("node", "18/stable"))) plan.packages
+    plan.base_image = "node:18" && plan.build_commands = ["npm ci"] && plan.packages = [] && plan.run_command = "node index.js"
 
   let%test "it correctly recognizes yarn" =
     let plan = NodeProvider.plan_build "../examples/node-yarn" in
