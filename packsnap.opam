@@ -13,6 +13,8 @@ depends: [
   "ocaml"
   "dune" {>= "3.7"}
   "yojson"
+  "ppx_inline_test"
+  "ppx_expect"
   "odoc" {with-doc}
 ]
 build: [
