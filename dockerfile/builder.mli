@@ -1,1 +1,1 @@
-val build_dockerfile : Packsnap_providers.BuildPlan.t -> string
+val build_dockerfile : PacksnapProviders.BuildPlan.t -> string

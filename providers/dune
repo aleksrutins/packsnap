@@ -1,5 +1,5 @@
 (library
- (name packsnap_providers)
+ (name packsnapProviders)
  (modules_without_implementation providerBase)
  (libraries yojson packsnap)
  (inline_tests

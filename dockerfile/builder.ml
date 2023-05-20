@@ -1,5 +1,5 @@
 open Packsnap.Util
-open Packsnap_providers
+open PacksnapProviders
 
 let package_commands (packages : Package.t list) =
   let open Package in
@@ -33,7 +33,7 @@ let build_dockerfile (plan : BuildPlan.t) =
 let%test_module "Dockerfile generation" =
   (module struct
     let%expect_test "it can generate a basic dockerfile" =
-      let plan = Packsnap_providers.All.plan_build "../examples/node" in
+      let plan = Core.plan_build "../examples/node" in
       print_endline @@ build_dockerfile (Option.get plan);
       [%expect
         {|

@@ -1,6 +1,6 @@
 (library
- (name packsnap_dockerfile)
- (libraries packsnap_providers)
+ (name packsnapDockerfile)
+ (libraries packsnapProviders)
  (inline_tests
   (deps
    (source_tree ../examples/)))
