@@ -1,6 +1,6 @@
 open ProviderBase
 open Packsnap.Logger
-open Util
+open Packsnap.Util
 
 module NodeProvider : Provider = struct
   let logger = new logger "node";
@@ -91,7 +91,7 @@ module NodeProvider : Provider = struct
   let plan_build path =
     BuildPlan.create_plan
       [
-        Snap("node", get_node_version path)
+        Snap("node", (get_node_version path) ++ "/stable")
       ]
       (get_build_cmds path)
       (get_start_cmd path)
@@ -102,7 +102,7 @@ let%test_module "node tests" = (module struct
 
   let%test "it correctly recognizes node" =
     let plan = NodeProvider.plan_build "../examples/node" in
-    List.exists ((=) (Package.Snap("node", "18"))) plan.packages
+    List.exists ((=) (Package.Snap("node", "18/stable"))) plan.packages
 
   let%test "it correctly recognizes yarn" =
     let plan = NodeProvider.plan_build "../examples/node-yarn" in
