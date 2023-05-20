@@ -89,7 +89,7 @@ module NodeProvider : Provider = struct
 
   let plan_build path =
     let version = get_node_version path in
-    BuildPlan.create_plan ("node:" ++ version) [] (get_build_cmds path)
+    BuildPlan.create_plan ("node:" ++ version) [] (get_build_cmds path) [ "." ]
       (get_start_cmd path)
 end
 

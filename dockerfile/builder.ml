@@ -22,9 +22,11 @@ let build_dockerfile (plan : BuildPlan.t) =
   in
   String.concat "\n"
     [
-      Printf.sprintf "FROM %s" plan.base_image;
+      Printf.sprintf "FROM %s AS build" plan.base_image;
       String.concat "\n" install_cmds;
       String.concat "\n" (List.map (( ++ ) "RUN ") plan.build_commands);
+      Printf.sprintf "FROM %s" plan.base_image;
+      String.concat "\n" (List.map (fun f -> Printf.sprintf "COPY --from=build %s ." f) plan.include_files);
       "ENTRYPOINT " ++ plan.run_command;
     ]
 
@@ -35,9 +37,11 @@ let%test_module "Dockerfile generation" =
       print_endline @@ build_dockerfile (Option.get plan);
       [%expect
         {|
-      FROM node:18
+      FROM node:18 AS build
 
       RUN npm ci
+      FROM node:18
+      COPY --from=build . .
       ENTRYPOINT node index.js
     |}]
   end)
