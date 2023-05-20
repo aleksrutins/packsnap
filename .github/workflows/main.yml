@@ -36,4 +36,6 @@ jobs:
         run: opam install $(cat deps.txt)
         
       - name: Build & test
-        run: dune test
+        run: |
+          eval $(opam env)
+          dune test
