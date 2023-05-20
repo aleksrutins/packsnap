@@ -3,7 +3,7 @@ open Packsnap.Logger
 open Packsnap.Util
 
 module NodeProvider : Provider = struct
-  let logger = new logger "node";
+  let log_tag = "node"
 
   module PackageManager = struct
     type t = Npm | Yarn | Pnpm
@@ -24,7 +24,7 @@ module NodeProvider : Provider = struct
       else if exists "pnpm-lock.yaml" then Pnpm
       else if exists "package-lock.json" then Npm
       else begin
-        logger#warn "No lockfile found, assuming this project uses NPM; however, this may break the build. Please run `npm install` to generate a lockfile.";
+        log_tag |> warn "No lockfile found, assuming this project uses NPM; however, this may break the build. Please run `npm install` to generate a lockfile.";
         Npm
       end
 
