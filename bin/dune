@@ -8,4 +8,5 @@
   directories
   core
   core_unix
-  core_unix.filename_unix))
+  core_unix.filename_unix
+  cmdliner))

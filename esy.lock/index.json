@@ -1,5 +1,5 @@
 {
-  "checksum": "a83d612ce12214189458210113f3e040",
+  "checksum": "8b57dc8453139506bb34d9412cd8f18b",
   "root": "packsnap@link-dev:./package.json",
   "node": {
     "packsnap@link-dev:./package.json": {
@@ -17,11 +17,12 @@
         "@opam/reason@opam:3.8.2@19b5db6d",
         "@opam/ppx_inline_test@opam:v0.15.1@4afd76e6",
         "@opam/ppx_expect@opam:v0.15.1@a3661212",
-        "@opam/ocaml-lsp-server@opam:1.15.1-4.14@76510e53",
+        "@opam/ocaml-lsp-server@opam:1.15.0-4.14@663142c5",
         "@opam/dune@opam:3.7.1@40db2f22",
         "@opam/directories@opam:0.5@afb4b717",
         "@opam/core_unix@opam:v0.15.2@a3910581",
-        "@opam/core@opam:v0.15.1@7166c930"
+        "@opam/core@opam:v0.15.1@7166c930",
+        "@opam/cmdliner@opam:1.2.0@b0c6143c"
       ],
       "devDependencies": []
     },
@@ -139,6 +140,7 @@
         "ocaml@4.14.0@d41d8cd9", "@opam/topkg@opam:1.0.7@7ee47d76",
         "@opam/ocamlfind@opam:1.9.6@da5169c7",
         "@opam/ocamlbuild@opam:0.14.2@c6163b28",
+        "@opam/cmdliner@opam:1.2.0@b0c6143c",
         "@esy-ocaml/substs@0.0.1@d41d8cd9"
       ],
       "devDependencies": [ "ocaml@4.14.0@d41d8cd9" ]
@@ -1869,20 +1871,20 @@
         "@opam/dune@opam:3.7.1@40db2f22"
       ]
     },
-    "@opam/ocaml-lsp-server@opam:1.15.1-4.14@76510e53": {
-      "id": "@opam/ocaml-lsp-server@opam:1.15.1-4.14@76510e53",
+    "@opam/ocaml-lsp-server@opam:1.15.0-4.14@663142c5": {
+      "id": "@opam/ocaml-lsp-server@opam:1.15.0-4.14@663142c5",
       "name": "@opam/ocaml-lsp-server",
-      "version": "opam:1.15.1-4.14",
+      "version": "opam:1.15.0-4.14",
       "source": {
         "type": "install",
         "source": [
-          "archive:https://opam.ocaml.org/cache/sha256/9e/9e8e1edb067b0b6edc9b8081f1c046427afc6d5d422fe88a9bf2f8076ab9826d#sha256:9e8e1edb067b0b6edc9b8081f1c046427afc6d5d422fe88a9bf2f8076ab9826d",
-          "archive:https://github.com/ocaml/ocaml-lsp/releases/download/1.15.1-4.14/lsp-1.15.1-4.14.tbz#sha256:9e8e1edb067b0b6edc9b8081f1c046427afc6d5d422fe88a9bf2f8076ab9826d"
+          "archive:https://opam.ocaml.org/cache/sha256/b7/b778672c85a4a69451de31d5aef370f80851179c56b80688fd6f588923cd5b63#sha256:b778672c85a4a69451de31d5aef370f80851179c56b80688fd6f588923cd5b63",
+          "archive:https://github.com/ocaml/ocaml-lsp/releases/download/1.15.0-4.14/lsp-1.15.0-4.14.tbz#sha256:b778672c85a4a69451de31d5aef370f80851179c56b80688fd6f588923cd5b63"
         ],
         "opam": {
           "name": "ocaml-lsp-server",
-          "version": "1.15.1-4.14",
-          "path": "esy.lock/opam/ocaml-lsp-server.1.15.1-4.14"
+          "version": "1.15.0-4.14",
+          "path": "esy.lock/opam/ocaml-lsp-server.1.15.0-4.14"
         }
       },
       "overrides": [],
@@ -2696,6 +2698,28 @@
         "@opam/base_bigstring@opam:v0.15.0@0c190123",
         "@opam/base@opam:v0.15.1@e8a71f35"
       ]
+    },
+    "@opam/cmdliner@opam:1.2.0@b0c6143c": {
+      "id": "@opam/cmdliner@opam:1.2.0@b0c6143c",
+      "name": "@opam/cmdliner",
+      "version": "opam:1.2.0",
+      "source": {
+        "type": "install",
+        "source": [
+          "archive:https://opam.ocaml.org/cache/sha512/6f/6fcd6a59a6fbc6986b1aecdc3e4ce7a0dc43c65a16b427d6caa5504b10b51384f6b0bc703af646b09f5f1caeb6827b37d4480ce350ca8006204c850785f2810b#sha512:6fcd6a59a6fbc6986b1aecdc3e4ce7a0dc43c65a16b427d6caa5504b10b51384f6b0bc703af646b09f5f1caeb6827b37d4480ce350ca8006204c850785f2810b",
+          "archive:https://erratique.ch/software/cmdliner/releases/cmdliner-1.2.0.tbz#sha512:6fcd6a59a6fbc6986b1aecdc3e4ce7a0dc43c65a16b427d6caa5504b10b51384f6b0bc703af646b09f5f1caeb6827b37d4480ce350ca8006204c850785f2810b"
+        ],
+        "opam": {
+          "name": "cmdliner",
+          "version": "1.2.0",
+          "path": "esy.lock/opam/cmdliner.1.2.0"
+        }
+      },
+      "overrides": [],
+      "dependencies": [
+        "ocaml@4.14.0@d41d8cd9", "@esy-ocaml/substs@0.0.1@d41d8cd9"
+      ],
+      "devDependencies": [ "ocaml@4.14.0@d41d8cd9" ]
     },
     "@opam/chrome-trace@opam:3.7.1@92d3c503": {
       "id": "@opam/chrome-trace@opam:3.7.1@92d3c503",

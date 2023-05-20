@@ -1,10 +1,6 @@
 open! Core;
-
-module AppId = {
-  let qualifier = "com";
-  let organization = "rutins";
-  let application = "packsnap";
-};
+open AppInfo;
+open Cmdliner;
 
 let create_build_dir = project_path => {
   module Dirs = Directories.Project_dirs(AppId);
@@ -17,4 +13,10 @@ let create_build_dir = project_path => {
   dir;
 };
 
-let _ = print_endline(create_build_dir("."));
+let cmd =
+  Cmd.group(
+    Cmd.info("packsnap"),
+    [Cmd.v(Cmd.info("build"), Build.build_t)],
+  );
+
+exit(Cmd.eval(cmd));

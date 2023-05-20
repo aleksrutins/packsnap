@@ -1,0 +1,8 @@
+lib: [
+  "/home/aleks/Projects/packsnap/_esy/default/store/b/packsnap-9baf10d5/install/default/lib/packsnap/META"
+  "/home/aleks/Projects/packsnap/_esy/default/store/b/packsnap-9baf10d5/install/default/lib/packsnap/dune-package"
+  "/home/aleks/Projects/packsnap/_esy/default/store/b/packsnap-9baf10d5/install/default/lib/packsnap/opam"
+]
+bin: [
+  "/home/aleks/Projects/packsnap/_esy/default/store/b/packsnap-9baf10d5/install/default/bin/packsnap"
+]
