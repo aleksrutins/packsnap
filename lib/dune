@@ -1,2 +1,3 @@
 (library
- (name packsnap))
+ (name packsnap)
+ (libraries core))

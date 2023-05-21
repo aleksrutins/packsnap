@@ -23,6 +23,7 @@ let build_dockerfile (plan : BuildPlan.t) =
   String.concat "\n"
     [
       Printf.sprintf "FROM %s AS build" plan.base_image;
+      "COPY . .";
       String.concat "\n" install_cmds;
       String.concat "\n" (List.map (( ++ ) "RUN ") plan.build_commands);
       Printf.sprintf "FROM %s" plan.base_image;
@@ -36,12 +37,13 @@ let build_dockerfile (plan : BuildPlan.t) =
 let%test_module "Dockerfile generation" =
   (module struct
     let%expect_test "it can generate a basic dockerfile" =
-      let plan = Core.plan_build "../examples/node" in
-      print_endline @@ build_dockerfile (Option.get plan);
+      let plan = Plan.plan_build "../examples/node" in
+      print_endline @@ build_dockerfile (Option.unwrap plan);
       [%expect
         {|
       FROM node:18 AS build
 
+      COPY . .
       RUN npm ci
       FROM node:18
       COPY --from=build . .

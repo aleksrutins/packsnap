@@ -1,3 +1,4 @@
+open! Core
 open Packsnap.Util
 
 type t = {

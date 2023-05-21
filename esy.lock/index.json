@@ -1,5 +1,5 @@
 {
-  "checksum": "23be363a78decffa66324b15d5c48ba1",
+  "checksum": "60f692fd318fee1a3afae5e915d2be20",
   "root": "packsnap@link-dev:./package.json",
   "node": {
     "packsnap@link-dev:./package.json": {
@@ -14,11 +14,13 @@
       "overrides": [],
       "dependencies": [
         "ocaml@4.14.0@d41d8cd9", "@opam/yojson@opam:2.1.0@157478b0",
+        "@opam/spawn@opam:v0.15.1@85e9d6f1",
         "@opam/reason@opam:3.8.2@19b5db6d",
         "@opam/ppx_inline_test@opam:v0.15.1@4afd76e6",
         "@opam/ppx_expect@opam:v0.15.1@a3661212",
         "@opam/odoc@opam:2.2.0@020767ad",
-        "@opam/ocaml-lsp-server@opam:1.15.0-4.14@663142c5",
+        "@opam/ocaml-lsp-server@opam:1.15.1-4.14@76510e53",
+        "@opam/fileutils@opam:0.6.4@2b69f125",
         "@opam/dune@opam:3.7.1@40db2f22",
         "@opam/directories@opam:0.5@afb4b717",
         "@opam/core_unix@opam:v0.15.2@a3910581",
@@ -1968,20 +1970,20 @@
         "@opam/dune@opam:3.7.1@40db2f22"
       ]
     },
-    "@opam/ocaml-lsp-server@opam:1.15.0-4.14@663142c5": {
-      "id": "@opam/ocaml-lsp-server@opam:1.15.0-4.14@663142c5",
+    "@opam/ocaml-lsp-server@opam:1.15.1-4.14@76510e53": {
+      "id": "@opam/ocaml-lsp-server@opam:1.15.1-4.14@76510e53",
       "name": "@opam/ocaml-lsp-server",
-      "version": "opam:1.15.0-4.14",
+      "version": "opam:1.15.1-4.14",
       "source": {
         "type": "install",
         "source": [
-          "archive:https://opam.ocaml.org/cache/sha256/b7/b778672c85a4a69451de31d5aef370f80851179c56b80688fd6f588923cd5b63#sha256:b778672c85a4a69451de31d5aef370f80851179c56b80688fd6f588923cd5b63",
-          "archive:https://github.com/ocaml/ocaml-lsp/releases/download/1.15.0-4.14/lsp-1.15.0-4.14.tbz#sha256:b778672c85a4a69451de31d5aef370f80851179c56b80688fd6f588923cd5b63"
+          "archive:https://opam.ocaml.org/cache/sha256/9e/9e8e1edb067b0b6edc9b8081f1c046427afc6d5d422fe88a9bf2f8076ab9826d#sha256:9e8e1edb067b0b6edc9b8081f1c046427afc6d5d422fe88a9bf2f8076ab9826d",
+          "archive:https://github.com/ocaml/ocaml-lsp/releases/download/1.15.1-4.14/lsp-1.15.1-4.14.tbz#sha256:9e8e1edb067b0b6edc9b8081f1c046427afc6d5d422fe88a9bf2f8076ab9826d"
         ],
         "opam": {
           "name": "ocaml-lsp-server",
-          "version": "1.15.0-4.14",
-          "path": "esy.lock/opam/ocaml-lsp-server.1.15.0-4.14"
+          "version": "1.15.1-4.14",
+          "path": "esy.lock/opam/ocaml-lsp-server.1.15.1-4.14"
         }
       },
       "overrides": [],
@@ -2362,6 +2364,35 @@
       ],
       "devDependencies": [
         "ocaml@4.14.0@d41d8cd9", "@opam/dune@opam:3.7.1@40db2f22"
+      ]
+    },
+    "@opam/fileutils@opam:0.6.4@2b69f125": {
+      "id": "@opam/fileutils@opam:0.6.4@2b69f125",
+      "name": "@opam/fileutils",
+      "version": "opam:0.6.4",
+      "source": {
+        "type": "install",
+        "source": [
+          "archive:https://opam.ocaml.org/cache/sha256/7a/7a7bb6bc6a36b6ebdac2b4e46a9e9b10d366c5a2d4417a5f1d68a1fbba0a445f#sha256:7a7bb6bc6a36b6ebdac2b4e46a9e9b10d366c5a2d4417a5f1d68a1fbba0a445f",
+          "archive:https://github.com/gildor478/ocaml-fileutils/releases/download/v0.6.4/fileutils-0.6.4.tbz#sha256:7a7bb6bc6a36b6ebdac2b4e46a9e9b10d366c5a2d4417a5f1d68a1fbba0a445f"
+        ],
+        "opam": {
+          "name": "fileutils",
+          "version": "0.6.4",
+          "path": "esy.lock/opam/fileutils.0.6.4"
+        }
+      },
+      "overrides": [],
+      "dependencies": [
+        "ocaml@4.14.0@d41d8cd9", "@opam/stdlib-shims@opam:0.3.0@72c7bc98",
+        "@opam/seq@opam:base@d8d7de1d", "@opam/dune@opam:3.7.1@40db2f22",
+        "@opam/base-unix@opam:base@87d0b2eb",
+        "@esy-ocaml/substs@0.0.1@d41d8cd9"
+      ],
+      "devDependencies": [
+        "ocaml@4.14.0@d41d8cd9", "@opam/stdlib-shims@opam:0.3.0@72c7bc98",
+        "@opam/seq@opam:base@d8d7de1d", "@opam/dune@opam:3.7.1@40db2f22",
+        "@opam/base-unix@opam:base@87d0b2eb"
       ]
     },
     "@opam/fieldslib@opam:v0.15.0@7885a86c": {

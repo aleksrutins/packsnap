@@ -1,3 +1,4 @@
+open! Core
 let print style message_type message tag =
   Printf.printf "\x1B[%sm%s(%s):\x1b[0m %s\n" style message_type tag message
 
