@@ -7,12 +7,13 @@
     "@opam/directories": "*",
     "@opam/dune": "*",
     "@opam/ocaml-lsp-server": "*",
+    "@opam/odoc": "2.2.0",
     "@opam/ppx_expect": "*",
     "@opam/ppx_inline_test": "*",
     "@opam/reason": "*",
     "@opam/yojson": "*",
     "ocaml": "4.14.x"
   },
-  "scripts": { "test": "dune test", "fmt": "dune fmt" },
+  "scripts": { "test": "dune test", "fmt": "dune fmt", "doc": "dune build @doc" },
   "esy": { "build": "dune build -p packsnap" }
 }

@@ -42,17 +42,16 @@ jobs:
   lint-doc:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Use OCaml 4.14.x
-        uses: ocaml/setup-ocaml@v2
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          ocaml-compiler: 4.14.x
-          dune-cache: true
+          node-version: '20'
+      
+      - name: Setup Esy
+        run: npm i -g esy
 
       - name: Lint doc
-        uses: ocaml/setup-ocaml/lint-doc@v2
+        run: esy doc
 
   lint-fmt:
     runs-on: ubuntu-latest
@@ -60,11 +59,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use OCaml 4.14.x
-        uses: ocaml/setup-ocaml@v2
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          ocaml-compiler: 4.14.x
-          dune-cache: true
+          node-version: '20'
+      
+      - name: Setup Esy
+        run: npm i -g esy
 
       - name: Lint fmt
-        uses: ocaml/setup-ocaml/lint-fmt@v2
+        run: esy fmt
