@@ -9,7 +9,7 @@ namespace Packsnap.Providers
 class Provider (α : Type u) where
   detect : α → App → Environment → IO Bool
   getBaseImage : α → App → Environment → IO String   
-  getEnvironment : α -> App → Environment → IO Environment
+  getEnvironment : α → App → Environment → IO Environment
   getBuildPhases : α → App → Environment → IO (List Phase)
   getEntrypoint : α → App → Environment → IO (Option Entrypoint)
 
