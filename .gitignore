@@ -1,3 +1,2 @@
-_build/
-_esy/
-*.install
+/build
+/lake-packages/*
