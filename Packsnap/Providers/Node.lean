@@ -1,46 +1,90 @@
 import Packsnap.Provider
 import Packsnap.App
 import Packsnap.Env
+import Packsnap.Util
 import Lean.Data.Json
 
 open Packsnap.Util
 open Lean
 
-namespace Packsnap.Providers
+namespace Packsnap.Providers.Node
 
 structure PackageJson where
-  engines : List (String × String)
+  engines : Option (List (String × String))
+  scripts : Option (List (String × String))
+  packageManager : Option String
 deriving FromJson
 
+inductive PackageManager where
+  | npm
+  | yarn
+  | pnpm
+
+def PackageManager.fromName (name : Option String) : PackageManager :=
+  match name with
+  | some "npm" => npm
+  | some "yarn" => yarn
+  | some "pnpm" => pnpm
+  | _ => npm
+
+def PackageManager.getName (self : PackageManager) : String :=
+  match self with
+  | npm => "npm"
+  | yarn => "yarn"
+  | pnpm => "pnpm"
+
+def PackageManager.getScriptCommand (self : PackageManager) (script : String) : String :=
+  s!"{self.getName} run {script}"
+
+def PackageManager.getInstallCommand (self : PackageManager) : String :=
+  s!"{self.getName} install"
+
 structure NodeProvider where
+  defaultNodeVersion := "18"
+  
+  getPackageJson (app : App) : IO PackageJson := app.readJson PackageJson "package.json"
+  
+  getPackageManager (app : App) : IO PackageManager := do
+    let packageJson ← getPackageJson app
+    let packageManagerName := packageJson.packageManager.map (λ p => p.takeWhile Char.isAlpha)
+    pure <| PackageManager.fromName packageManagerName
 
-def defaultNodeVersion := "18"
-
-def getMajorVersion (version : String) : String := 
-  if let some major := (version.splitOn ".").head? then
-    major
-  else
-    defaultNodeVersion
-
-def getNodeVersion (app : App) : IO String := do
-  try
-    let package_json ← app.readJson PackageJson "package.json"
-    match package_json.engines.lookup "node" with
-    | some version => pure (getMajorVersion version)
-    | none => pure defaultNodeVersion
-  catch _ => pure defaultNodeVersion
+  getNodeVersion (app : App) : IO String := do
+    try
+      let packageJson ← getPackageJson app
+      match packageJson.engines >>= List.lookup "node" with
+      | some version => pure <| getMajorVersion version defaultNodeVersion
+      | none => pure defaultNodeVersion
+    catch _ => pure defaultNodeVersion
+  
+  hasScript (app : App) (script : String) : IO Bool := do
+    try
+      let packageJson ← getPackageJson app
+      pure ((packageJson.scripts >>= List.lookup script).isSome)
+    catch _ => pure false
   
 
 instance : Provider NodeProvider where
   detect self app env := app.includesFile "package.json"
 
   getBaseImage self app env := do
-    let version ← getNodeVersion app
+    let version ← self.getNodeVersion app
     pure s!"node:{version}"
   
   getEnvironment self app env := pure env
 
-  getBuildPhases self app env := pure []
+  getBuildPhases self app env := do
+    let pm ← self.getPackageManager app
+    
+    let installPhase := Phase.install [pm.getInstallCommand] ["package.json", "package-lock.json"]
+    let buildPhases :=
+      if (← self.hasScript app "build") then
+        [Phase.build [pm.getScriptCommand "build"]]
+      else []
+    
+    pure <| installPhase :: buildPhases
+    
+
   getEntrypoint self app env := pure {
     includeFiles := ["."]
     command := "true"

@@ -23,6 +23,22 @@ structure Phase where
   includeFiles : Option (List String)
   commands : List String
 
+def Phase.install (commands : List String) (includeFiles : Option (List String)) : Phase :=
+  {
+    name := "install"
+    pkgs := []
+    includeFiles
+    commands
+  }
+
+def Phase.build (commands : List String) : Phase :=
+  {
+    name := "build"
+    pkgs := []
+    includeFiles := ["."]
+    commands
+  }
+
 structure Entrypoint where
   includeFiles : Option (List String)
   command: String
