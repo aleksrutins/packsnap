@@ -51,7 +51,7 @@ structure BuildPlan where
   phases : List Phase
   entrypoint : Entrypoint
 
-def createBuildEnv (plan : BuildPlan) : IO (Option String) := do
+def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
   let homeDir <- IO.getEnv "HOME"
   let homePath := homeDir.map FilePath.mk
   match homePath with
@@ -59,11 +59,16 @@ def createBuildEnv (plan : BuildPlan) : IO (Option String) := do
   | some homePath =>
     let buildDir := FilePath.join homePath (FilePath.mk ".packsnap-build")
 
-    IO.FS.removeDirAll buildDir
+    if ← buildDir.pathExists then IO.FS.removeDirAll buildDir
 
     IO.FS.createDirAll buildDir
+
+    let currentDir ← IO.currentDir
+
+    let _ ← IO.Process.run {cmd := "sh", args := #["-c", s!"cp -r {currentDir}/* {buildDir}"]}
     
     let assetsDirPath := FilePath.join buildDir "assets"
+    IO.FS.createDirAll assetsDirPath
     for (name, contents) in plan.assets do
       let path := FilePath.join assetsDirPath name
       let file <- IO.FS.Handle.mk path IO.FS.Mode.write
@@ -116,4 +121,5 @@ def createBuildEnv (plan : BuildPlan) : IO (Option String) := do
     pure (some buildDir.toString)
 
 class BuildPlanGenerator (α : Type u) where
+  detect : α → App → Environment → IO Bool
   generatePlan : α → App → Environment → IO BuildPlan

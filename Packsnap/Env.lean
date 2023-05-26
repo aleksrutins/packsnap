@@ -8,7 +8,7 @@ structure Environment where
     | some value => pure (some value)
     | none => IO.getEnv name
 
-def merge (a : Environment) (b : Environment) : Environment :=
+def Environment.merge (a : Environment) (b : Environment) : Environment :=
     {
       env := a.env ++ b.env
     }

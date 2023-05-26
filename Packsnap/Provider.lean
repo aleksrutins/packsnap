@@ -14,6 +14,7 @@ class Provider (α : Type u) where
   getEntrypoint : α → App → Environment → IO Entrypoint
 
 instance [Provider α] : BuildPlanGenerator α where
+  detect self app env := Provider.detect self app env
   generatePlan self app env := do
     let resultEnv ← Provider.getEnvironment self app env
     let base ← Provider.getBaseImage self app env 
