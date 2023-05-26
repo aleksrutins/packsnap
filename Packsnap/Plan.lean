@@ -31,33 +31,72 @@ structure BuildPlan where
   app : App
   baseImage : String
   env : Environment
-  assets : Option (List (String × String))
+  assets : List (String × String)
   phases : List Phase
-  entrypoint : Option Entrypoint
+  entrypoint : Entrypoint
 
 def createBuildEnv (plan : BuildPlan) : IO (Option String) := do
-  let homeDir ← IO.getEnv "HOME"
+  let homeDir <- IO.getEnv "HOME"
   let homePath := homeDir.map FilePath.mk
   match homePath with
   | none => pure none
   | some homePath =>
     let buildDir := FilePath.join homePath (FilePath.mk ".packsnap-build")
 
-    IO.FS.removeDir buildDir
+    IO.FS.removeDirAll buildDir
 
-    let dir ← IO.FS.createDirAll buildDir
-    let assetsDir := FilePath.join buildDir "assets"
+    IO.FS.createDirAll buildDir
     
-    
+    let assetsDirPath := FilePath.join buildDir "assets"
+    for (name, contents) in plan.assets do
+      let path := FilePath.join assetsDirPath name
+      let file <- IO.FS.Handle.mk path IO.FS.Mode.write
+      file.putStr contents
 
-    let setEnv := String.join (plan.env.env.map (λ (k, v) ↦ s!"
+    let setEnv := String.join (plan.env.env.map (λ (k, v) => s!"
       ARG {k}={v}
       ENV {k}=$\{{k}}\n
     "))
+
+    let phases := String.join (plan.phases.map (λ phase => 
+      let copyFiles := 
+        if let some files := phase.includeFiles then
+          String.join (files.map (λ f => s!"COPY {f} .\n"))
+        else ""
+      
+      let runCmds :=
+        String.join (phase.commands.map (λ cmd => s!"RUN {cmd}\n"))
+      
+      s!"
+      {copyFiles}
+      {runCmds}
+      "
+    ))
+
+    let runCopyFiles :=
+      if let some cmds := 
+        plan.entrypoint.includeFiles.map 
+          (λ files =>
+            String.join
+              (files.map
+                (λ f => s!"COPY --from=build {f} .\n")))
+      then cmds
+      else ""
+
     let dockerfile := s!"
       FROM {plan.baseImage} AS build
       {setEnv}
+      COPY assets assets
+      {phases}
+
+      FROM {plan.baseImage}
+      {runCopyFiles}
+      CMD {plan.entrypoint.command}
     "
+
+    let dockerfileHandle <- IO.FS.Handle.mk (FilePath.join buildDir "Dockerfile") IO.FS.Mode.write
+    dockerfileHandle.putStr dockerfile
+
     pure (some buildDir.toString)
 
 class BuildPlanGenerator (α : Type u) where

@@ -11,7 +11,7 @@ class Provider (α : Type u) where
   getBaseImage : α → App → Environment → IO String   
   getEnvironment : α → App → Environment → IO Environment
   getBuildPhases : α → App → Environment → IO (List Phase)
-  getEntrypoint : α → App → Environment → IO (Option Entrypoint)
+  getEntrypoint : α → App → Environment → IO Entrypoint
 
 instance [Provider α] : BuildPlanGenerator α where
   generatePlan self app env := do
@@ -23,7 +23,7 @@ instance [Provider α] : BuildPlanGenerator α where
       app := app
       env := resultEnv
       baseImage := base
-      assets := none
+      assets := []
       phases := build
       entrypoint := entry
     }
