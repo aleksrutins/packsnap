@@ -100,18 +100,23 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
           (λ files =>
             String.join
               (files.map
-                (λ f => s!"COPY --from=build {f} .\n")))
+                (λ f => s!"COPY --from=build {FilePath.join (FilePath.mk "/app") (FilePath.mk f)} .\n")))
       then cmds
       else ""
 
     let dockerfile := s!"
       FROM {plan.baseImage} AS build
       {setEnv}
+
+      WORKDIR /app
       COPY assets assets
       {phases}
 
       FROM {plan.baseImage}
+
+      WORKDIR /app
       {runCopyFiles}
+
       CMD {plan.entrypoint.command}
     "
 
