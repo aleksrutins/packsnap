@@ -65,15 +65,15 @@ structure NodeProvider where
   
 
 instance : Provider NodeProvider where
-  detect self app env := app.includesFile "package.json"
+  detect _self app _env := app.includesFile "package.json"
 
-  getBaseImage self app env := do
+  getBaseImage self app _env := do
     let version ← self.getNodeVersion app
     pure s!"node:{version}"
   
-  getEnvironment self app env := pure env
+  getEnvironment _self _app env := pure env
 
-  getBuildPhases self app env := do
+  getBuildPhases self app _env := do
     let pm ← self.getPackageManager app
     
     let installPhase := Phase.install [pm.getInstallCommand] ["package.json", "package-lock.json"]
@@ -85,7 +85,17 @@ instance : Provider NodeProvider where
     pure <| installPhase :: buildPhases
     
 
-  getEntrypoint self app env := pure {
-    includeFiles := ["."]
-    command := "true"
-  }
+  getEntrypoint self app _env := do
+    let pm ← self.getPackageManager app
+
+    let cmd := if (← self.hasScript app "start") 
+      then pm.getScriptCommand "start" 
+      else
+        if (← app.includesFile "index.js")
+        then "node index.js"
+        else ""
+
+    pure {
+      includeFiles := ["."]
+      command := cmd
+    }
