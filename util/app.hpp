@@ -5,6 +5,10 @@
 #include <optional>
 #include <fstream>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -24,6 +28,12 @@ namespace Packsnap::Util {
                 result += buf;
             } while(!file.eof());
             return result;
+        }
+
+        auto ReadJson(string name) -> optional<json> {
+            auto text = ReadFile(name);
+            if(text.has_value()) return json::parse(*text);
+            else return nullopt;
         }
     };
 }

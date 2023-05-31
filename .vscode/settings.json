@@ -1,0 +1,12 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/aleks/Projects/packsnap",
+            "binaryPath": "/home/aleks/Projects/packsnap/packsnap",
+            "binaryArgs": []
+        }
+    ],
+    "files.associations": {
+        "optional": "cpp"
+    }
+}
