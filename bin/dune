@@ -1,0 +1,14 @@
+(executable
+ (public_name packsnap)
+ (name main)
+ (libraries
+  packsnap
+  packsnapProviders
+  packsnapDockerfile
+  directories
+  core
+  core_unix
+  core_unix.filename_unix
+  cmdliner
+  fileutils
+  spawn))
