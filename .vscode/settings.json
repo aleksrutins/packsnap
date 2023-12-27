@@ -1,6 +1,4 @@
 {
-    "ocaml.sandbox": {
-        "kind": "esy",
-        "root": "${workspaceFolder:packsnap}"
-    }
+    "mesonbuild.configureOnOpen": false,
+    "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
 }

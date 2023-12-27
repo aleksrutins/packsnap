@@ -1,8 +1,0 @@
-(library
- (name packsnapDockerfile)
- (libraries packsnapProviders)
- (inline_tests
-  (deps
-   (source_tree ../examples/)))
- (preprocess
-  (pps ppx_inline_test ppx_expect)))
