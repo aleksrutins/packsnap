@@ -1,0 +1,21 @@
+<a [href]="url"><slot></slot></a>
+
+<style>
+    :host {
+        display: block;
+        border-radius: 5px;
+        padding-top: 2px;
+    }
+    a {
+        color: rgb(78, 78, 78);
+        font-weight: 600;
+        font-size: 0.8em;
+        text-decoration: none;
+
+        transition-property: color;
+        transition-duration: .5s;
+    }
+    a:hover {
+        color: rgb(50, 50, 50);
+    }
+</style>

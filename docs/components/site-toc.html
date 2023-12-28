@@ -1,0 +1,40 @@
+<nav>
+<h1 id="site-title">Packsnap</h1>
+
+<nav-section>Start Here</nav-section>
+<nav-link url="/">Introduction</nav-link>
+
+<nav-section>Guides</nav-section>
+<nav-link url="/guides/custom-plans.html">Custom Plans</nav-link>
+
+<nav-section>Reference</nav-section>
+<nav-link url="/reference/supported-languages.html">Supported Languages</nav-link>
+</nav>
+
+<style>
+    :host {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding: 5px;
+        padding-left: 5%;
+        background-color: #f6f6f7;
+
+        box-sizing: border-box;
+
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        min-width: fit-content;
+    }
+
+    nav {
+        padding-right: 1.5em;
+    }
+
+    h1#site-title {
+        border-bottom: 1px solid #aaa;
+        padding: 5px;
+        text-align: center;
+    }
+</style>
