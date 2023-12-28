@@ -6,7 +6,7 @@
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, utils, cheetah }:
+  outputs = { self, nixpkgs, utils, cheetah, packsnap }:
     let config = {
       always_hydrate = true;
     };
