@@ -1,27 +1,36 @@
 {
   description = "A reproducible container build system";
 
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
+    npmlock2nix = {
+      url = "github:nix-community/npmlock2nix";
+      flake = false;
+    };
+    naersk.url = "github:nix-community/naersk";
+  };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, npmlock2nix, naersk }:
     flake-utils.lib.eachDefaultSystem (system:
       let 
-        pkgs = nixpkgs.legacyPackages.${system};
-        stuff = import ./. { inherit nixpkgs pkgs; };
+        pkgs = (import nixpkgs) {
+          inherit system;
+          overlays = [
+            (final: prev: {
+              npmlock2nix = import npmlock2nix { pkgs = prev; };
+            })
+          ];
+        };
+        naersk' = pkgs.callPackage naersk {};
+        npmlock2nix' = pkgs.npmlock2nix;
+
       in
-      rec {
-        packages = flake-utils.lib.flattenTree {
-          packsnap = stuff.packsnap;
-          default = stuff.packsnap;
+      {
+        lib = import ./lib {
+          inherit nixpkgs pkgs;
+          naersk = naersk';
+          npmlock2nix = npmlock2nix';
         };
-        devShells = flake-utils.lib.flattenTree {
-          default = pkgs.mkShell {
-            buildInputs = [
-              packages.default
-            ];
-          };
-        };
-        lib = stuff.lib;
       }
     );
  }

@@ -1,7 +1,5 @@
-{ sources ? import ../sources.nix
-, pkgs ? import sources.nixpkgs { overlays = [ (import sources."rust.nix") ]; }
-}:
-let plan = import ../plan {};
+{ pkgs, naersk }:
+let plan = import ../plan { inherit pkgs; };
     parseCargoToml = path:
       pkgs.lib.importTOML /./${path}/Cargo.toml;
     getStartCmd = path:
@@ -11,7 +9,7 @@ in {
     builtins.pathExists (/./${path}/Cargo.toml);
   plan = path:
     let
-      derivation = pkgs.rust-nix.buildPackage { root = path; buildInputs = [pkgs.libiconv]; };
+      derivation = naersk.buildPackage { root = path; buildInputs = [pkgs.libiconv]; };
     in
       plan.buildPlan [] [derivation] [] (getStartCmd path);
 }

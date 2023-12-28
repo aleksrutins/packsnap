@@ -1,9 +1,9 @@
-{ nixpkgs ? (import ./sources.nix).nixpkgs
+{ nixpkgs
 , pkgs ? import nixpkgs {}
-, pkgsLinux ? import <nixpkgs> { system = "x86_64-linux"; }
 , misc ? import ./misc.nix {}
-, packsnap }:
-let providers = import ./providers {};
+, naersk
+, npmlock2nix }:
+let providers = import ./providers { inherit pkgs naersk npmlock2nix; };
 in {
   build = ({ name ? "packsnap-image", path }:
     let provider = providers.planBuild path;

@@ -1,8 +1,6 @@
-{ sources ? import ../sources.nix
-, pkgs ? import sources.nixpkgs {}
-, npmlock2nix ? pkgs.callPackage sources.npmlock2nix {}
-}:
-let plan = import ../plan {};
+{ pkgs
+, npmlock2nix }:
+let plan = import ../plan { inherit pkgs; };
 
     getStartCmd = path: derivation:
       let packageJson = pkgs.lib.importJSON /./${path}/package.json;

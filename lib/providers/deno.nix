@@ -1,7 +1,5 @@
-{ sources ? import ../sources.nix {}
-, pkgs ? import sources.nixpkgs {}
-}:
-let plan = import ../plan {};
+{ pkgs }:
+let plan = import ../plan { inherit pkgs; };
 
     getStartFile = path:
       builtins.head (builtins.filter (builtins.pathExists) [/./${path}/index.js /./${path}/index.ts]);

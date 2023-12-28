@@ -1,5 +1,4 @@
-{ nixpkgs ? (import ../sources.nix).nixpkgs
-, pkgs ? import nixpkgs {} }:
+{ pkgs }:
 {
   buildPlan = variables: contents: libraries: runCmd:
     with builtins;
