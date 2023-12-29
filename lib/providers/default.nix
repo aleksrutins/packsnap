@@ -5,6 +5,7 @@ let
     (import ./node.nix { inherit pkgs npmlock2nix; })
     # Deno MUST come after Node!
     (import ./deno.nix { inherit pkgs; })
+    (import ./go.nix { inherit pkgs; })
   ];
 in with builtins;
 {
