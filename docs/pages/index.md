@@ -17,7 +17,7 @@ To install it, just add it to your project's Flake inputs:
 ```
 
 ## Basic Usage
-To build a basic app using one of the [supported languages](/reference/supported-languages.md), put a simple `flake.nix` in your project's root:
+To build a basic app using one of the [supported languages](/reference/supported-languages.html), put a simple `flake.nix` in your project's root:
 ```nix
 {
   description = "My fantastic new containerized project";
