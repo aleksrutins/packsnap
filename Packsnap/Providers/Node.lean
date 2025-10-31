@@ -50,7 +50,7 @@ def PackageManager.getInstallCommand (self : PackageManager) : String :=
 
 structure NodeProvider where
 
-def defaultNodeVersion := "18"
+def defaultNodeVersion := "24"
 
 def getPackageJson (app : App) : IO PackageJson := app.readJson PackageJson "package.json"
 
