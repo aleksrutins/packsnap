@@ -57,13 +57,13 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
   match homePath with
   | none => pure none
   | some homePath =>
-    let buildDir := FilePath.join homePath (FilePath.mk ".packsnap-build")
+    let buildDir := FilePath.join homePath ".packsnap-build"
 
     if ← buildDir.pathExists then IO.FS.removeDirAll buildDir
 
     IO.FS.createDirAll buildDir
 
-    let currentDir <- pure plan.app.path
+    let currentDir := plan.app.path
 
     let _ ← IO.Process.run {cmd := "sh", args := #["-c", s!"cp -r {currentDir}/* {buildDir}"]}
 

@@ -42,6 +42,12 @@ def PackageManager.getName (self : PackageManager) : String :=
   | yarn => "yarn"
   | pnpm => "pnpm"
 
+def PackageManager.lockFile (self : PackageManager) : String :=
+  match self with
+  | npm => "package-lock.json"
+  | yarn => "yarn.lock"
+  | pnpm => "pnpm-lock.yaml"
+
 def PackageManager.getScriptCommand (self : PackageManager) (script : String) : String :=
   s!"{self.getName} run {script}"
 
@@ -55,6 +61,10 @@ def defaultNodeVersion := "24"
 def getPackageJson (app : App) : IO PackageJson := app.readJson PackageJson "package.json"
 
 def getPackageManager (app : App) : IO PackageManager := do
+  if ← app.includesFile "package-lock.json" then return PackageManager.npm
+  if ← app.includesFile "yarn.lock" then return PackageManager.yarn
+  if ← app.includesFile "pnpm-lock.yaml" then return PackageManager.pnpm
+
   let packageJson ← getPackageJson app
   let packageManagerName := packageJson.packageManager.map (λ p => p.takeWhile Char.isAlpha)
   pure <| PackageManager.fromName packageManagerName
@@ -86,7 +96,9 @@ instance : Provider NodeProvider where
   getBuildPhases _self app _env := do
     let pm ← getPackageManager app
 
-    let installPhase := Phase.install [pm.getInstallCommand] ["package.json", "package-lock.json"]
+    let installPhase := Phase.install
+      (pm.getInstallCommand :: (if let PackageManager.npm := pm then [] else ["corepack enable"])).reverse
+      ["package.json", pm.lockFile]
     let buildPhases :=
       if (← hasScript app PackageJsonScripts.build) then
         [Phase.build [pm.getScriptCommand "build"]]
