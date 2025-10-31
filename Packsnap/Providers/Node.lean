@@ -72,7 +72,7 @@ def hasScript (app : App) (script : PackageJsonScripts → Option String) : IO B
     let packageJson ← getPackageJson app
     pure ((packageJson.scripts >>= script).isSome)
   catch _ => pure false
-  
+
 
 instance : Provider NodeProvider where
   detect _self app _env := app.includesFile "package.json"
@@ -80,26 +80,26 @@ instance : Provider NodeProvider where
   getBaseImage _self app _env := do
     let version ← getNodeVersion app
     pure s!"node:{version}"
-  
+
   getEnvironment _self _app env := pure env
 
   getBuildPhases _self app _env := do
     let pm ← getPackageManager app
-    
+
     let installPhase := Phase.install [pm.getInstallCommand] ["package.json", "package-lock.json"]
     let buildPhases :=
       if (← hasScript app PackageJsonScripts.build) then
         [Phase.build [pm.getScriptCommand "build"]]
       else [Phase.build []]
-    
+
     pure <| installPhase :: buildPhases
-    
+
 
   getEntrypoint _self app _env := do
     let pm ← getPackageManager app
 
-    let cmd := if (← hasScript app PackageJsonScripts.start) 
-      then pm.getScriptCommand "start" 
+    let cmd := if (← hasScript app PackageJsonScripts.start)
+      then pm.getScriptCommand "start"
       else
         if (← app.includesFile "index.js")
         then "node index.js"

@@ -63,10 +63,10 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
 
     IO.FS.createDirAll buildDir
 
-    let currentDir ← IO.currentDir
+    let currentDir <- pure plan.app.path
 
     let _ ← IO.Process.run {cmd := "sh", args := #["-c", s!"cp -r {currentDir}/* {buildDir}"]}
-    
+
     let assetsDirPath := FilePath.join buildDir "assets"
     IO.FS.createDirAll assetsDirPath
     for (name, contents) in plan.assets do
@@ -79,15 +79,15 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
       ENV {k}=$\{{k}}\n
     "))
 
-    let phases := String.join (plan.phases.map (λ phase => 
-      let copyFiles := 
+    let phases := String.join (plan.phases.map (λ phase =>
+      let copyFiles :=
         if let some files := phase.includeFiles then
           String.join (files.map (λ f => s!"COPY {f} .\n"))
         else ""
-      
+
       let runCmds :=
         String.join (phase.commands.map (λ cmd => s!"RUN {cmd}\n"))
-      
+
       s!"
       {copyFiles}
       {runCmds}
@@ -95,8 +95,8 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
     ))
 
     let runCopyFiles :=
-      if let some cmds := 
-        plan.entrypoint.includeFiles.map 
+      if let some cmds :=
+        plan.entrypoint.includeFiles.map
           (λ files =>
             String.join
               (files.map
