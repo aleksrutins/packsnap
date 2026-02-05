@@ -123,7 +123,7 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
     let dockerfileHandle <- IO.FS.Handle.mk (FilePath.join buildDir "Dockerfile") IO.FS.Mode.write
     dockerfileHandle.putStr dockerfile
 
-    pure (some buildDir.toString)
+    return (some buildDir.toString)
 
 class BuildPlanGenerator (α : Type u) where
   detect : α → App → Environment → IO Bool

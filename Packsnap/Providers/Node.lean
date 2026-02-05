@@ -66,7 +66,7 @@ def getPackageManager (app : App) : IO PackageManager := do
   if ← app.includesFile "pnpm-lock.yaml" then return PackageManager.pnpm
 
   let packageJson ← getPackageJson app
-  let packageManagerName := packageJson.packageManager.map (λ p => p.takeWhile Char.isAlpha)
+  let packageManagerName := packageJson.packageManager.map (λ p => (p.takeWhile Char.isAlpha).toString)
   pure <| PackageManager.fromName packageManagerName
 
 def getNodeVersion (app : App) : IO String := do
@@ -109,15 +109,16 @@ instance : Provider NodeProvider where
 
   getEntrypoint _self app _env := do
     let pm ← getPackageManager app
+    let hasIndex ← app.includesFile "index.js"
 
     let cmd := if (← hasScript app PackageJsonScripts.start)
       then pm.getScriptCommand "start"
       else
-        if (← app.includesFile "index.js")
+        if hasIndex
         then "node index.js"
         else ""
 
-    pure {
+    return {
       includeFiles := ["."]
       command := cmd
     }

@@ -2,10 +2,10 @@ import Lake
 open Lake DSL
 
 package «packsnap» {
-  
+
 }
 
-require std4 from git "https://github.com/leanprover/std4"
+-- require "leanprover-community" / "batteries" @ git "main"
 
 lean_lib «Packsnap» {
   -- add library configuration options here

@@ -1,10 +1,11 @@
 import «Packsnap»
 
-def main (args: List String) : IO UInt32 := do
-  if let some plan ← planBuild
-    (match args.get? 0 with
-    | some path => path
-    | none => ".") then
+def printHelp : IO UInt32 := do
+  IO.eprintln "usage : packsnap (build) [path]"
+  return 1
+
+def runBuild (path : Option String) : IO UInt32 := do
+  if let some plan ← planBuild (path.getD ".") then
     if let some buildPath ← plan.createBuildEnv then
       let proc ← IO.Process.spawn {
         cmd := "docker"
@@ -14,5 +15,15 @@ def main (args: List String) : IO UInt32 := do
       }
       return ← proc.wait
     else
-      println! "failed to create build plan"
-  pure 1
+      IO.eprintln "failed to create build plan"
+      return 1
+  else
+    IO.eprintln "failed to create build plan"
+    return 1
+
+def main (args: List String) : IO UInt32 :=
+  if noArgs : args.length < 1 then
+    printHelp
+  else match args[0] with
+    | "build" => runBuild args[1]?
+    | _ => printHelp

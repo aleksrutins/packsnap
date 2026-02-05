@@ -1,9 +1,15 @@
-{"version": 4,
- "packagesDir": "lake-packages",
+{"version": "1.1.0",
+ "packagesDir": ".lake/packages",
  "packages":
- [{"git":
-   {"url": "https://github.com/leanprover/std4",
-    "subDir?": null,
-    "rev": "d02dea6b813b41369e538b128360195d83f2d1bc",
-    "name": "std4",
-    "inputRev?": null}}]}
+ [{"url": "https://github.com/leanprover-community/batteries",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "6032d2c129d865af1032ed2f95bba4fdf4494cd2",
+   "name": "batteries",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": false,
+   "configFile": "lakefile.toml"}],
+ "name": "packsnap",
+ "lakeDir": ".lake"}
