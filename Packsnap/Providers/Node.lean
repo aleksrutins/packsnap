@@ -85,6 +85,8 @@ def hasScript (app : App) (script : PackageJsonScripts → Option String) : IO B
 
 
 instance : Provider NodeProvider where
+  name _ := "node"
+
   detect _self app _env := app.includesFile "package.json"
 
   getBaseImage _self app _env := do
@@ -97,6 +99,7 @@ instance : Provider NodeProvider where
     let pm ← getPackageManager app
 
     let installPhase := Phase.install
+      []
       (pm.getInstallCommand :: (if let PackageManager.npm := pm then [] else ["corepack enable"])).reverse
       ["package.json", pm.lockFile]
     let buildPhases :=

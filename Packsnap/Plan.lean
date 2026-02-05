@@ -8,6 +8,17 @@ namespace Packsnap.Util
 inductive Pkg where
   | snap (name : String) (channel : Option String) : Pkg
   | deb (name : String) : Pkg
+  | apk (name : String) : Pkg
+
+structure PkgInfo where
+  manager : String
+  name : String
+
+def PkgInfo.of (p : Pkg) : PkgInfo :=
+  match p with
+  | Pkg.snap name channel => {manager := "snap", name := if let some channel := channel then s!"{name}/{channel}" else name}
+  | Pkg.deb name => {manager := "deb", name := name}
+  | Pkg.apk name => {manager := "apk", name := name}
 
 def getInstallCommand (p : Pkg) :=
   match p with
@@ -16,6 +27,7 @@ def getInstallCommand (p : Pkg) :=
     | some channel => s!"snap install {name} --channel={channel}"
     | none => s!"snap install {name}"
   | Pkg.deb name => s!"apt-get install {name}"
+  | Pkg.apk name => s!"apk add {name}"
 
 structure Phase where
   name : String
@@ -23,10 +35,10 @@ structure Phase where
   includeFiles : Option (List String)
   commands : List String
 
-def Phase.install (commands : List String) (includeFiles : Option (List String)) : Phase :=
+def Phase.install (pkgs : List Pkg) (commands : List String) (includeFiles : Option (List String)) : Phase :=
   {
     name := "install"
-    pkgs := []
+    pkgs := pkgs
     includeFiles
     commands
   }
@@ -44,6 +56,7 @@ structure Entrypoint where
   command: String
 
 structure BuildPlan where
+  providerName : String
   app : App
   baseImage : String
   env : Environment
