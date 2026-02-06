@@ -2,6 +2,7 @@ import Packsnap.Env
 import Packsnap.App
 
 open System
+open Lean
 
 namespace Packsnap.Util
 
@@ -9,6 +10,7 @@ inductive Pkg where
   | snap (name : String) (channel : Option String) : Pkg
   | deb (name : String) : Pkg
   | apk (name : String) : Pkg
+deriving FromJson
 
 structure PkgInfo where
   manager : String
@@ -20,7 +22,7 @@ def PkgInfo.of (p : Pkg) : PkgInfo :=
   | Pkg.deb name => {manager := "deb", name := name}
   | Pkg.apk name => {manager := "apk", name := name}
 
-def getInstallCommand (p : Pkg) :=
+def Pkg.getInstallCommand (p : Pkg) :=
   match p with
   | Pkg.snap name channel =>
     match channel with
@@ -34,6 +36,7 @@ structure Phase where
   pkgs : List Pkg
   includeFiles : Option (List String)
   commands : List String
+deriving FromJson
 
 def Phase.install (pkgs : List Pkg) (commands : List String) (includeFiles : Option (List String)) : Phase :=
   {
@@ -54,6 +57,7 @@ def Phase.build (commands : List String) : Phase :=
 structure Entrypoint where
   includeFiles : Option (List String)
   command: String
+deriving FromJson
 
 structure BuildPlan where
   providerName : String
@@ -98,11 +102,15 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
           String.join (files.map (λ f => s!"COPY {f} .\n"))
         else ""
 
+      let installCmds :=
+        String.join (phase.pkgs.map (λ p => s!"RUN {p.getInstallCommand}"))
+
       let runCmds :=
         String.join (phase.commands.map (λ cmd => s!"RUN {cmd}\n"))
 
       s!"
       {copyFiles}
+      {installCmds}
       {runCmds}
       "
     ))

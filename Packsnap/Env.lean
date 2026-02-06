@@ -3,8 +3,8 @@ namespace Packsnap.Util
 structure Environment where
   env : List (String × String)
 
-  getValue (name : String) : IO (Option String) :=
-    match env.lookup name with
+def Environment.getValue (self : Environment) (name : String) : IO (Option String) :=
+    match self.env.lookup name with
     | some value => pure (some value)
     | none => IO.getEnv name
 

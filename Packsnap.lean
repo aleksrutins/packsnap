@@ -3,9 +3,11 @@ import Packsnap.Plan
 import Packsnap.Provider
 import Packsnap.Providers.Node
 import Packsnap.Providers.Go
+import Packsnap.Config
 
 open Packsnap.Util
 open Packsnap.Providers
+open Packsnap.Config
 
 def checkPlan [BuildPlanGenerator α] (path : System.FilePath) (provider : α) : IO (Option BuildPlan) := do
   let app: App := {
@@ -13,7 +15,8 @@ def checkPlan [BuildPlanGenerator α] (path : System.FilePath) (provider : α) :
   }
   let env: Environment := { env := [("APP_ENV", "production")] }
   if (← BuildPlanGenerator.detect provider app env) then
-    return (some <| ← BuildPlanGenerator.generatePlan provider app env)
+    let plan ← BuildPlanGenerator.generatePlan provider app env
+    return (some <| Config.extend (← Config.load app) plan)
   else return none
 
 def planBuild (path : System.FilePath) : IO (Option BuildPlan) := do

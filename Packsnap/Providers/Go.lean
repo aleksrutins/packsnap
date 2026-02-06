@@ -19,6 +19,6 @@ instance : Provider GoProvider where
 
     pure <| installPhase :: [buildPhase]
   getEntrypoint _self _app _env := pure {
-    includeFiles := ["."]
+    includeFiles := ["out"]
     command := "./out"
   }
