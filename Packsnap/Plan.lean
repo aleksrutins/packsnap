@@ -1,5 +1,6 @@
 import Packsnap.Env
 import Packsnap.App
+import AssertCmd
 
 open System
 open Lean
@@ -68,13 +69,23 @@ structure BuildPlan where
   phases : List Phase
   entrypoint : Entrypoint
 
+def getBuildDir (homePath : FilePath) (path : FilePath) :=
+  homePath / ".packsnap-build" /
+    (match path.components.getLastD "" with
+    | "" => (path.components.dropLast.getLastD "")
+    | p => p)
+
+#assert (getBuildDir "~" "~/.test/hello").toString == "~/.packsnap-build/hello"
+#assert (getBuildDir "~" "~/.test/hello/").toString == "~/.packsnap-build/hello"
+
 def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
   let homeDir <- IO.getEnv "HOME"
   let homePath := homeDir.map FilePath.mk
   match homePath with
   | none => pure none
   | some homePath =>
-    let buildDir := FilePath.join homePath ".packsnap-build"
+
+    let buildDir := getBuildDir homePath plan.app.path
 
     if ← buildDir.pathExists then IO.FS.removeDirAll buildDir
 
@@ -96,11 +107,14 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
       ENV {k}=$\{{k}}\n
     "))
 
-    let phases := String.join (plan.phases.map (λ phase =>
-      let copyFiles :=
-        if let some files := phase.includeFiles then
-          String.join (files.map (λ f => s!"COPY {f} .\n"))
-        else ""
+    let phases ← IO.mkRef []
+
+    for phase in plan.phases do
+      let copyFiles ← IO.mkRef ""
+      if let some files := phase |> Phase.includeFiles then
+        for f in files do
+          if ← plan.app.includesFile f then
+            copyFiles.modify (String.append s!"COPY {f} .\n")
 
       let installCmds :=
         String.join (phase.pkgs.map (λ p => s!"RUN {p.getInstallCommand}\n"))
@@ -108,12 +122,17 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
       let runCmds :=
         String.join (phase.commands.map (λ cmd => s!"RUN {cmd}\n"))
 
-      s!"
-      {copyFiles}
-      {installCmds}
-      {runCmds}
-      "
-    ))
+      let copyFilesS ← copyFiles.get
+      phases.modify λ ps =>
+        s!"
+        {copyFilesS}
+        {installCmds}
+        {runCmds}
+        " :: ps
+
+    phases.modify List.reverse
+
+    let phasesS ← String.join <$> phases.get
 
     let runCopyFiles :=
       if let some cmds :=
@@ -131,7 +150,7 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
 
       WORKDIR /app
       COPY assets assets
-      {phases}
+      {phasesS}
 
       FROM {plan.baseImage}
 
