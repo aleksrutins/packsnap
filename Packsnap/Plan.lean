@@ -103,7 +103,7 @@ def BuildPlan.createBuildEnv (plan : BuildPlan) : IO (Option String) := do
         else ""
 
       let installCmds :=
-        String.join (phase.pkgs.map (λ p => s!"RUN {p.getInstallCommand}"))
+        String.join (phase.pkgs.map (λ p => s!"RUN {p.getInstallCommand}\n"))
 
       let runCmds :=
         String.join (phase.commands.map (λ cmd => s!"RUN {cmd}\n"))
